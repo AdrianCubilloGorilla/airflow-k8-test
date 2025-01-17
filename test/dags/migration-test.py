@@ -29,7 +29,7 @@ with DAG(
         schema='zuora',
         table='product_rate_plan_charge_tiers_v1',
         partition_name='snapshot_day={{ ds }}', 
-        mysql_conn_id='hive_metastore',
+        conn_id='hive_metastore',
         poke_interval=60,
         timeout=600
     )
