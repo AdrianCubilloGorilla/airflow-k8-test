@@ -16,7 +16,6 @@ default_args = {
 # Define the DAG
 with DAG(
     'migration_test',
-    dag_id='product_rate_plan_charge_tiers_sensor',
     default_args=default_args,
     description='DAG to monitor Hive metastore partitions and run something on EKS',
     schedule_interval=timedelta(days=1),
