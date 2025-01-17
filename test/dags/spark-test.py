@@ -8,9 +8,6 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 
 default_args={
    'depends_on_past': False,
-   #'email': ['abcd@gmail.com'],
-   #'email_on_failure': False,
-   #'email_on_retry': False,
    'retries': 1,
    'retry_delay': timedelta(minutes=5)
 }
@@ -32,8 +29,6 @@ with DAG(
        application_file="spark-pi.yaml",
        namespace="spark-jobs",
        kubernetes_conn_id="k8s",
-       #api_group="sparkoperator.k8s.io",
-       #api_version="v1beta2",
        do_xcom_push=True,
        dag=dag
    )
