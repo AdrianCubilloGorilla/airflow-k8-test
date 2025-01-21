@@ -29,13 +29,24 @@ with DAG(
         schema='zuora',
         table='product_rate_plan_charge_tiers_v1',
         partition_name='snapshot_day={{ ds }}',
-        conn_id='hive_metastore'
+        mysql_conn_id='hive_metastore',
+        conn_id='hive_metastore',
+        sql=''' SELECT 'X'
+            FROM PARTITIONS A0
+            LEFT OUTER JOIN TBLS B0 ON A0.TBL_ID = B0.TBL_ID
+            LEFT OUTER JOIN DBS C0 ON B0.DB_ID = C0.DB_ID
+            WHERE
+                B0.TBL_NAME = '{table}' AND
+                C0.NAME = '{schema}' AND
+                A0.PART_NAME = '{partition_name}' '''.format(table='product_rate_plan_charge_tiers_v1'
+                                                             , schema='zuora'
+                                                             , partition_name='snapshot_day={{ ds }}')
         #mysql_conn_id='hive_metastore'
         #poke_interval=60,
         #timeout=600
     )
 
-    start_pod = EksPodOperator(
+    eks_pod_operator1 = EksPodOperator(
         task_id="start_pod",
         pod_name="test_pod",
         cluster_name="test",
@@ -47,4 +58,4 @@ with DAG(
     )
 
     # Define task dependencies
-    #check_hive_partition >> start_pod
+    check_hive_partition >> eks_pod_operator1
