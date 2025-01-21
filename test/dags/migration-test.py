@@ -28,10 +28,11 @@ with DAG(
         task_id='check_hive_partition',
         schema='zuora',
         table='product_rate_plan_charge_tiers_v1',
-        partition_name='snapshot_day={{ ds }}', 
-        mysql_conn_id='hive_metastore',
+        partition_name='snapshot_day={{ ds }}',
+        conn_id='hive_metastore'
+        #mysql_conn_id='hive_metastore'
         #poke_interval=60,
-        timeout=600
+        #timeout=600
     )
 
     start_pod = EksPodOperator(
@@ -46,4 +47,4 @@ with DAG(
     )
 
     # Define task dependencies
-    check_hive_partition >> start_pod
+    #check_hive_partition >> start_pod
